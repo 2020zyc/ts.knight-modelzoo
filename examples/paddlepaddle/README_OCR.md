@@ -146,7 +146,7 @@ Knight --chip TX5368A rne-profiling --weight /my_project/quant/to_compiler/ocrv3
 ```
 
 
-## Benchmark(ImageNet)
+## Benchmark(数据集来自官网提供和整理)
 
 |  模型名称     | 浮点精度  | 量化精度  | 测试数据量   | 推理速度(单张图片)   |
 |--------------|-----------|----------|----------|--------------------|
