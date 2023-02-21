@@ -1,3 +1,23 @@
+## 环境准备
+
+- 通过百度网盘下载example的模型权重和数据集 [下载地址](https://pan.baidu.com/s/1T1t-2410GT5oj8F0IJ417w?pwd=398k)
+- knight docker镜像请联系[技术支持](../../README.md#技术讨论)获取
+- 启动docker容器:
+
+```
+docker load -i TS.Knight-publish-1.0.0.4_build1.tar.gz
+docker run -v $localhost_dir/examples:/examples -it ubuntu-18.04-ts-release:knight-publish-1.0.0.4 /bin/bash
+```
+
+&emsp;&emsp;容器启动成功后，在容器内任意目录下均可使用Knight命令。其中docker镜像的tar包和examples目录为下载的压缩包解压出来的，localhost_dir 为解压出来的本地目录，存放模型权重和量化数据集，目录结构如下：
+```
+examples/
+├── images
+└── paddle_weights
+```
+&emsp;&emsp;PaddlePaddle模型源码位于docker镜像的目录是：/Knight/TS-Quantize/Onnx/frontends/paddle/model/
+
+
 ### OCR_DET 检测网络
 
 - __量化__
