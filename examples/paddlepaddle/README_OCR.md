@@ -32,7 +32,7 @@ examples/paddlepaddle/ocrv3_det/
 （说明：我们下载了paddle官方ch_PP-OCRv3_det模型（链接见文末）；限于编译器对tensor大小的要求，我们将模型input shape设置为[1,3,512,896]；这与官方推荐的shape=[1,3,746,1312]有所差别）
 
 # 执行量化命令,完成paddle2onnx转换，并对模型进行量化定点
-Knight --chip TX5368A quant onnx -f paddle -m examples/paddlepaddle/ocrv3_det/ocrv3_det.pdmodel -if infer_ocr_det_model -w examples/paddlepaddle/ocrv3_det/ocrv3_det.pdiparams -s /my_project/quant/ocrv3_det/ -bs 1 -i 100 -qm kl -is 1 3 512 896
+Knight --chip TX5368A quant onnx -f paddle -m examples/paddlepaddle/ocrv3_det/ocrv3_det.pdmodel -if infer_ocr_det_model -w examples/paddlepaddle/ocrv3_det/ocrv3_det.pdiparams -s /my_project/quant/ocrv3_det/ -bs 1 -i 50 -qm kl -is 1 3 512 896
 
 # 拷贝模型到指定目录
 cp /my_project/quant/ocrv3_det/ocrv3_det_quantize.onnx /my_project/quant/to_compiler/ocrv3_det/
@@ -81,7 +81,7 @@ examples/paddlepaddle/ocrv3_cls/
 （说明：我们下载了paddle官方ch_ppocr_mobile_v2.0_cls模型（链接见文末））
 
 # 执行量化命令,完成paddle2onnx转换，并对模型进行量化定点
-Knight --chip TX5368A quant onnx -f paddle -m examples/paddlepaddle/ocrv3_cls/ocrv3_cls.pdmodel -if infer_ocr_cls_model -w examples/paddlepaddle/ocrv3_cls/ocrv3_cls.pdiparams -s /my_project/quant/ocrv3_cls/ -bs 1 -i 100 -is -1 3 48 192
+Knight --chip TX5368A quant onnx -f paddle -m examples/paddlepaddle/ocrv3_cls/ocrv3_cls.pdmodel -if infer_ocr_cls_model -w examples/paddlepaddle/ocrv3_cls/ocrv3_cls.pdiparams -s /my_project/quant/ocrv3_cls/ -bs 1 -i 30 -is -1 3 48 192
 
 # 拷贝模型到指定目录
 cp /my_project/quant/ocrv3_cls/ocrv3_cls_quantize.onnx /my_project/quant/to_compiler/ocrv3_cls/
@@ -170,7 +170,7 @@ Knight --chip TX5368A rne-profiling --weight /my_project/quant/to_compiler/ocrv3
 
 |  模型名称     | 浮点精度  | 量化精度  | 测试数据量   | 推理速度(单张图片)   |
 |--------------|-----------|----------|----------|--------------------|
-| OCR_DET     | 0.411      | 0.418     | 500     |    3.2911ms        |
+| OCR_DET     | 0.411      | 0.415     | 500     |    3.2911ms        |
 | OCR_CLS     | 0.69       | 0.73      | 30      |    2.3425ms        |
 | OCR_REC     | 0.655      | 0.651     | 2077    |    10.4567ms       |
 
