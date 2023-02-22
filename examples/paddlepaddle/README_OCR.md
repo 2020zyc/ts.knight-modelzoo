@@ -11,7 +11,7 @@ docker run -v $localhost_dir/example_ocrv3:/TS-Knight/Quantize/Onnx/example -it 
 
 &emsp;&emsp;容器启动成功后，在容器内任意目录下均可使用Knight命令。其中docker镜像的tar包和examples目录为下载的压缩包解压出来的，localhost_dir 为解压出来的本地目录，存放模型权重和量化数据集，目录结构如下：
 ```
-example_ocr/
+example_ocrv3/
 ├── models
 └── data
 ```
