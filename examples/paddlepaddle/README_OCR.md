@@ -36,7 +36,7 @@ mkdir -p /my_project/quant/to_compiler/ocrv3_det
 （说明：我们下载了paddle官方ch_PP-OCRv3_det模型（链接见文末）；限于编译器对tensor大小的要求，我们将模型input shape设置为[1,3,512,896]；这与官方推荐的shape=[1,3,746,1312]有所差别）
 
 # 执行量化命令,完成paddle2onnx转换，并对模型进行量化定点
-python run_quantization.py -f paddle -r quant -ch TX511 -if infer_ocr_det_model -m /TS-Knight/Quantize/Onnx/example/models/ch_PP-OCRv3_det_infer_512x896/ocrv3_det.pdmodel -w /TS-Knight/Quantize/Onnx/example/models/ch_PP-OCRv3_det_infer_512x896/ocrv3_det.pdiparams -s /my_project/quant/ocrv3_det/ -bs 1 -i 50 -qm kl -is 1 3 512 896
+python run_quantization.py -f paddle -r quant -ch TX511 -od -if infer_ocr_det_model -m /TS-Knight/Quantize/Onnx/example/models/ch_PP-OCRv3_det_infer_512x896/ocrv3_det.pdmodel -w /TS-Knight/Quantize/Onnx/example/models/ch_PP-OCRv3_det_infer_512x896/ocrv3_det.pdiparams -s /my_project/quant/ocrv3_det/ -bs 1 -i 50 -qm kl -is 1 3 512 896
 
 # 执行推理命令,对转换模型和量化模型在整个测试集上进行推理（可并行执行）
 python run_quantization.py -r infer -ch TX511 -m /my_project/quant/ocrv3_det/ocrv3_det.onnx -if infer_ocr_det_model -bs 1 -i 500
