@@ -1,6 +1,6 @@
 ## 环境准备
 
-- 通过百度网盘下载example_ocr的模型权重和数据集 [下载地址](https://pan.baidu.com/s/1T1t-2410GT5oj8F0IJ417w?pwd=398k)
+- 通过百度网盘下载example_ocrv3的模型权重和数据集 [下载地址](https://pan.baidu.com/s/1T1t-2410GT5oj8F0IJ417w?pwd=398k)
 - knight docker镜像请联系[技术支持](../../README.md#技术讨论)获取
 - 启动docker容器:
 
