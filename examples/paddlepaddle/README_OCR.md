@@ -5,17 +5,16 @@
 - 启动docker容器:
 
 ```
-docker load -i TS.Knight-publish-1.0.0.4_build1.tar.gz
-docker run -v $localhost_dir/examples:/examples -it ubuntu-18.04-ts-release:knight-publish-1.0.0.4 /bin/bash
+docker load -i TS.Knight-publish-1.1.0.7_build1.tar.gz
+docker run -v $localhost_dir/example_ocrv3:/TS-Knight/Quantize/Onnx/example -it ubuntu-18.04-ts-release:knight-publish-1.1.0.7 /bin/bash
 ```
 
 &emsp;&emsp;容器启动成功后，在容器内任意目录下均可使用Knight命令。其中docker镜像的tar包和examples目录为下载的压缩包解压出来的，localhost_dir 为解压出来的本地目录，存放模型权重和量化数据集，目录结构如下：
 ```
-examples/
-├── images
-└── paddle_weights
+example_ocr/
+├── models
+└── data
 ```
-&emsp;&emsp;PaddlePaddle模型源码位于docker镜像的目录是：/Knight/TS-Quantize/Onnx/frontends/paddle/model/
 
 
 ### OCR_DET 检测网络
@@ -32,7 +31,7 @@ examples/paddlepaddle/ocrv3_det/
 （说明：我们下载了paddle官方ch_PP-OCRv3_det模型（链接见文末）；限于编译器对tensor大小的要求，我们将模型input shape设置为[1,3,512,896]；这与官方推荐的shape=[1,3,746,1312]有所差别）
 
 # 执行量化命令,完成paddle2onnx转换，并对模型进行量化定点
-python run_quantization.py -f paddle -r quant -m examples/paddlepaddle/ocrv3_det/ocrv3_det.pdmodel -if infer_ocr_det_model -w examples/paddlepaddle/ocrv3_det/ocrv3_det.pdiparams -s /my_project/quant/ocrv3_det/ -bs 1 -i 50 -qm kl -is 1 3 512 896
+python run_quantization.py -f paddle -r quant -if infer_ocr_det_model -m /TS-Knight/Quantize/Onnx/example/models/ch_PP-OCRv3_det_infer_512x896/ocrv3_det.pdmodel -w /TS-Knight/Quantize/Onnx/example/models/ch_PP-OCRv3_det_infer_512x896/ocrv3_det.pdiparams -s /my_project/quant/ocrv3_det/ -bs 1 -i 50 -qm kl -is 1 3 512 896
 
 # 执行推理命令,对已量化模型在整个测试集上进行推理
 python run_quantization.py -r infer -m /my_project/quant/ocrv3_det/ocrv3_det_quantize.onnx -if infer_ocr_det_model -bs 1 -i 500
@@ -84,7 +83,7 @@ examples/paddlepaddle/ocrv3_cls/
 （说明：我们下载了paddle官方ch_ppocr_mobile_v2.0_cls模型（链接见文末））
 
 # 执行量化命令,完成paddle2onnx转换，并对模型进行量化定点
-python run_quantization.py -f paddle -r quant -m examples/paddlepaddle/ocrv3_cls/ocrv3_cls.pdmodel -if infer_ocr_cls_model -w examples/paddlepaddle/ocrv3_cls/ocrv3_cls.pdiparams -s /my_project/quant/ocrv3_cls/ -bs 1 -i 10 -is -1 3 48 192
+python run_quantization.py -f paddle -r quant  -if infer_ocr_cls_model -m /TS-Knight/Quantize/Onnx/example/models/ch_ppocr_mobile_v2.0_cls_infer/ocrv3_cls.pdmodel -w /TS-Knight/Quantize/Onnx/example/models/ch_ppocr_mobile_v2.0_cls_infer/ocrv3_cls.pdiparams -s /my_project/quant/ocrv3_cls/ -bs 1 -i 10 -is -1 3 48 192
 
 # 执行推理命令,对已量化模型在整个测试集上进行推理
 python run_quantization.py -r infer -m /my_project/quant/ocrv3_cls/ocrv3_cls_quantize.onnx -if infer_ocr_cls_model -bs 1 -i 30
@@ -136,7 +135,7 @@ examples/paddlepaddle/ocrv3_rec/
 （说明：我们下载了paddle官方en_PP-OCRv3_rec模型（链接见文末）；限于编译器对维度的要求，将原始模型内部5维操作改成4维操作，同时将hardswish替换成relu，并在官网提供数据上重训练，得到精度与原模型一致的新模型，再进行量化）
 
 # 执行量化命令,完成paddle2onnx转换，并对模型进行量化定点
-python run_quantization.py -f paddle -r quant -m examples/paddlepaddle/ocrv3_det/ocrv3_rec.pdmodel -if infer_ocr_rec_model -w examples/paddlepaddle/ocrv3_rec/ocrv3_rec.pdiparams -s /my_project/quant/ocrv3_rec/ -bs 1 -i 600 -b 16 -qm min_max -is 1 3 48 320
+python run_quantization.py -f paddle -r quant -if infer_ocr_rec_model -m /TS-Knight/Quantize/Onnx/example/models/en_PP-OCRv3_rec_infer_retrain_relu_4dims/ocrv3_rec.pdmodel -w /TS-Knight/Quantize/Onnx/example/models/en_PP-OCRv3_rec_infer_retrain_relu_4dims/ocrv3_rec.pdiparams -s /my_project/quant/ocrv3_rec/ -bs 1 -i 600 -b 16 -qm min_max -is 1 3 48 320
 
 # 执行推理命令,对已量化模型在整个测试集上进行推理
 python run_quantization.py -r infer -m /my_project/quant/ocrv3_det/ocrv3_det_quantize.onnx -if infer_ocr_rec_model -bs 1 -i 2100
