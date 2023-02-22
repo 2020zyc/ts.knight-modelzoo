@@ -32,7 +32,10 @@ examples/paddlepaddle/ocrv3_det/
 （说明：我们下载了paddle官方ch_PP-OCRv3_det模型（链接见文末）；限于编译器对tensor大小的要求，我们将模型input shape设置为[1,3,512,896]；这与官方推荐的shape=[1,3,746,1312]有所差别）
 
 # 执行量化命令,完成paddle2onnx转换，并对模型进行量化定点
-Knight --chip TX5368A quant onnx -f paddle -m examples/paddlepaddle/ocrv3_det/ocrv3_det.pdmodel -if infer_ocr_det_model -w examples/paddlepaddle/ocrv3_det/ocrv3_det.pdiparams -s /my_project/quant/ocrv3_det/ -bs 1 -i 50 -qm kl -is 1 3 512 896
+python run_quantization.py -f paddle -r quant -m examples/paddlepaddle/ocrv3_det/ocrv3_det.pdmodel -if infer_ocr_det_model -w examples/paddlepaddle/ocrv3_det/ocrv3_det.pdiparams -s /my_project/quant/ocrv3_det/ -bs 1 -i 50 -qm kl -is 1 3 512 896
+
+# 执行推理命令,对已量化模型在整个测试集上进行推理
+python run_quantization.py -r infer -m /my_project/quant/ocrv3_det/ocrv3_det_quantize.onnx -if infer_ocr_det_model -bs 1 -i 500
 
 # 拷贝模型到指定目录
 cp /my_project/quant/ocrv3_det/ocrv3_det_quantize.onnx /my_project/quant/to_compiler/ocrv3_det/
@@ -81,7 +84,10 @@ examples/paddlepaddle/ocrv3_cls/
 （说明：我们下载了paddle官方ch_ppocr_mobile_v2.0_cls模型（链接见文末））
 
 # 执行量化命令,完成paddle2onnx转换，并对模型进行量化定点
-Knight --chip TX5368A quant onnx -f paddle -m examples/paddlepaddle/ocrv3_cls/ocrv3_cls.pdmodel -if infer_ocr_cls_model -w examples/paddlepaddle/ocrv3_cls/ocrv3_cls.pdiparams -s /my_project/quant/ocrv3_cls/ -bs 1 -i 30 -is -1 3 48 192
+python run_quantization.py -f paddle -r quant -m examples/paddlepaddle/ocrv3_cls/ocrv3_cls.pdmodel -if infer_ocr_cls_model -w examples/paddlepaddle/ocrv3_cls/ocrv3_cls.pdiparams -s /my_project/quant/ocrv3_cls/ -bs 1 -i 10 -is -1 3 48 192
+
+# 执行推理命令,对已量化模型在整个测试集上进行推理
+python run_quantization.py -r infer -m /my_project/quant/ocrv3_cls/ocrv3_cls_quantize.onnx -if infer_ocr_cls_model -bs 1 -i 30
 
 # 拷贝模型到指定目录
 cp /my_project/quant/ocrv3_cls/ocrv3_cls_quantize.onnx /my_project/quant/to_compiler/ocrv3_cls/
@@ -130,7 +136,10 @@ examples/paddlepaddle/ocrv3_rec/
 （说明：我们下载了paddle官方en_PP-OCRv3_rec模型（链接见文末）；限于编译器对维度的要求，将原始模型内部5维操作改成4维操作，同时将hardswish替换成relu，并在官网提供数据上重训练，得到精度与原模型一致的新模型，再进行量化）
 
 # 执行量化命令,完成paddle2onnx转换，并对模型进行量化定点
-Knight --chip TX5368A quant onnx -f paddle -m examples/paddlepaddle/ocrv3_det/ocrv3_rec.pdmodel -if infer_ocr_rec_model -w examples/paddlepaddle/ocrv3_rec/ocrv3_rec.pdiparams -s /my_project/quant/ocrv3_rec/ -bs 1 -i 600 -b 16 -qm min_max -is 1 3 48 320
+python run_quantization.py -f paddle -r quant -m examples/paddlepaddle/ocrv3_det/ocrv3_rec.pdmodel -if infer_ocr_rec_model -w examples/paddlepaddle/ocrv3_rec/ocrv3_rec.pdiparams -s /my_project/quant/ocrv3_rec/ -bs 1 -i 600 -b 16 -qm min_max -is 1 3 48 320
+
+# 执行推理命令,对已量化模型在整个测试集上进行推理
+python run_quantization.py -r infer -m /my_project/quant/ocrv3_det/ocrv3_det_quantize.onnx -if infer_ocr_rec_model -bs 1 -i 2100
 
 # 拷贝模型到指定目录
 cp /my_project/quant/ocrv3_rec/ocrv3_rec_quantize.onnx /my_project/quant/to_compiler/ocrv3_rec/
