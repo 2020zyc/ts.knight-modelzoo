@@ -21,7 +21,7 @@ example_ocr/
 
 - __网络说明__
 ```
-该网络对目标进行检测，指标为
+该网络对目标进行检测，指标为 precision、recall和hmean
 ```
 
 - __量化__
@@ -38,7 +38,8 @@ examples/paddlepaddle/ocrv3_det/
 # 执行量化命令,完成paddle2onnx转换，并对模型进行量化定点
 python run_quantization.py -f paddle -r quant -ch TX511 -if infer_ocr_det_model -m /TS-Knight/Quantize/Onnx/example/models/ch_PP-OCRv3_det_infer_512x896/ocrv3_det.pdmodel -w /TS-Knight/Quantize/Onnx/example/models/ch_PP-OCRv3_det_infer_512x896/ocrv3_det.pdiparams -s /my_project/quant/ocrv3_det/ -bs 1 -i 50 -qm kl -is 1 3 512 896
 
-# 执行推理命令,对已量化模型在整个测试集上进行推理
+# 执行推理命令,对转换模型和量化模型在整个测试集上进行推理（可并行执行）
+python run_quantization.py -r infer -ch TX511 -m /my_project/quant/ocrv3_det/ocrv3_det.onnx -if infer_ocr_det_model -bs 1 -i 500
 python run_quantization.py -r infer -ch TX511 -m /my_project/quant/ocrv3_det/ocrv3_det_quantize.onnx -if infer_ocr_det_model -bs 1 -i 500
 
 # 拷贝模型到指定目录
@@ -76,6 +77,11 @@ Knight --chip TX5368A rne-profiling --weight /my_project/quant/to_compiler/ocrv3
 
 ### OCR_CLS 分类网络
 
+- __网络说明__
+```
+该网络对目标进行2分类，指标为accuracy
+```
+
 - __量化__
 
 ```
@@ -90,7 +96,8 @@ examples/paddlepaddle/ocrv3_cls/
 # 执行量化命令,完成paddle2onnx转换，并对模型进行量化定点
 python run_quantization.py -f paddle -r quant -ch TX511 -if infer_ocr_cls_model -m /TS-Knight/Quantize/Onnx/example/models/ch_ppocr_mobile_v2.0_cls_infer/ocrv3_cls.pdmodel -w /TS-Knight/Quantize/Onnx/example/models/ch_ppocr_mobile_v2.0_cls_infer/ocrv3_cls.pdiparams -s /my_project/quant/ocrv3_cls/ -bs 1 -i 10 -is -1 3 48 192
 
-# 执行推理命令,对已量化模型在整个测试集上进行推理
+# 执行推理命令,对转换模型和量化模型在整个测试集上进行推理（可并行执行）
+python run_quantization.py -r infer -ch TX511 -m /my_project/quant/ocrv3_cls/ocrv3_cls.onnx -if infer_ocr_cls_model -bs 1 -i 30
 python run_quantization.py -r infer -ch TX511 -m /my_project/quant/ocrv3_cls/ocrv3_cls_quantize.onnx -if infer_ocr_cls_model -bs 1 -i 30
 
 # 拷贝模型到指定目录
@@ -128,6 +135,11 @@ Knight --chip TX5368A rne-profiling --weight /my_project/quant/to_compiler/ocrv3
 
 ### OCR_REC 识别网络
 
+- __网络说明__
+```
+该网络对目标进行识别，指标为 accuracy 和 edit distiance
+```
+
 - __量化__
 
 ```
@@ -142,7 +154,8 @@ examples/paddlepaddle/ocrv3_rec/
 # 执行量化命令,完成paddle2onnx转换，并对模型进行量化定点
 python run_quantization.py -f paddle -r quant -ch TX511 -if infer_ocr_rec_model -m /TS-Knight/Quantize/Onnx/example/models/en_PP-OCRv3_rec_infer_retrain_relu_4dims/ocrv3_rec.pdmodel -w /TS-Knight/Quantize/Onnx/example/models/en_PP-OCRv3_rec_infer_retrain_relu_4dims/ocrv3_rec.pdiparams -s /my_project/quant/ocrv3_rec/ -bs 1 -i 600 -b 16 -qm min_max -is 1 3 48 320
 
-# 执行推理命令,对已量化模型在整个测试集上进行推理
+# 执行推理命令,对转换模型和量化模型在整个测试集上进行推理（可并行执行）
+python run_quantization.py -r infer -ch TX511 -m /my_project/quant/ocrv3_det/ocrv3_det.onnx -if infer_ocr_rec_model -bs 1 -i 2100
 python run_quantization.py -r infer -ch TX511 -m /my_project/quant/ocrv3_det/ocrv3_det_quantize.onnx -if infer_ocr_rec_model -bs 1 -i 2100
 
 # 拷贝模型到指定目录
