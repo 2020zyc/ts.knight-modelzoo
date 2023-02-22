@@ -32,7 +32,7 @@ mkdir -p /my_project/quant/ocrv3_det
 mkdir -p /my_project/quant/to_compiler/ocrv3_det
 
 # 获取飞桨模型
-examples/paddlepaddle/ocrv3_det/
+/TS-Knight/Quantize/Onnx/example/models/ch_PP-OCRv3_det_infer_512x896/
 （说明：我们下载了paddle官方ch_PP-OCRv3_det模型（链接见文末）；限于编译器对tensor大小的要求，我们将模型input shape设置为[1,3,512,896]；这与官方推荐的shape=[1,3,746,1312]有所差别）
 
 # 执行量化命令,完成paddle2onnx转换，并对模型进行量化定点
@@ -90,7 +90,7 @@ mkdir -p /my_project/quant/ocrv3_cls
 mkdir -p /my_project/quant/to_compiler/ocrv3_cls
 
 # 获取飞桨模型
-examples/paddlepaddle/ocrv3_cls/
+/TS-Knight/Quantize/Onnx/example/models/ch_ppocr_mobile_v2.0_cls_infer/
 （说明：我们下载了paddle官方ch_ppocr_mobile_v2.0_cls模型（链接见文末））
 
 # 执行量化命令,完成paddle2onnx转换，并对模型进行量化定点
@@ -148,8 +148,8 @@ mkdir -p /my_project/quant/ocrv3_rec
 mkdir -p /my_project/quant/to_compiler/ocrv3_rec
 
 # 获取飞桨模型
-examples/paddlepaddle/ocrv3_rec/
-（说明：我们下载了paddle官方en_PP-OCRv3_rec模型（链接见文末）；限于编译器对维度的要求，将原始模型内部5维操作改成4维操作，同时将hardswish替换成relu，并在官网提供数据上重训练，得到精度与原模型一致的新模型，再进行量化）
+/TS-Knight/Quantize/Onnx/example/models/en_PP-OCRv3_rec_infer_retrain_relu_4dims/
+（说明：我们下载了paddle官方en_PP-OCRv3_rec模型（链接见文末）；限于编译器对tensor维度的要求，将原始模型内部5维操作改成4维操作，同时将hardswish替换成relu，并在官网提供数据上重训练，得到精度与原模型一致的新模型，再进行量化）
 
 # 执行量化命令,完成paddle2onnx转换，并对模型进行量化定点
 python run_quantization.py -f paddle -r quant -ch TX511 -if infer_ocr_rec_model -m /TS-Knight/Quantize/Onnx/example/models/en_PP-OCRv3_rec_infer_retrain_relu_4dims/ocrv3_rec.pdmodel -w /TS-Knight/Quantize/Onnx/example/models/en_PP-OCRv3_rec_infer_retrain_relu_4dims/ocrv3_rec.pdiparams -s /my_project/quant/ocrv3_rec/ -bs 1 -i 600 -b 16 -qm min_max -is 1 3 48 320
@@ -194,11 +194,11 @@ Knight --chip TX5368A rne-profiling --weight /my_project/quant/to_compiler/ocrv3
 
 ## Benchmark(数据集来自官网提供和整理)
 
-|  模型名称     | 浮点精度  | 量化精度  | 测试数据量   | 推理速度(单张图片)   |
-|--------------|-----------|----------|----------|--------------------|
-| OCR_DET     | 0.411      | 0.415     | 500     |    3.2911ms        |
-| OCR_CLS     | 0.699      | 0.699     | 30      |    2.3425ms        |
-| OCR_REC     | 0.655      | 0.651     | 2077    |    10.4567ms       |
+|  模型名称    | paddle浮点精度 | onnx浮点精度 | 量化精度  | 测试数据量 | 推理速度(单张图片) |
+|-------------|-----------|----------|----------|-----------|--------------------|
+| OCR_DET     | 0.411      |0.411      | 0.415     | 500     |    3.2911ms        |
+| OCR_CLS     | 0.699      |  0.699      |0.699     | 30      |    2.3425ms        |
+| OCR_REC     | 0.655      | 0.655      | 0.651     | 2077    |    10.4567ms       |
 
 ## 其他说明
 上文提到的所有官方模型均可在 [官方OCRv3模型](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/doc/doc_ch/models_list.md) 找到
