@@ -199,7 +199,7 @@ Knight --chip TX5368A rne-profiling --weight /my_project/quant/to_compiler/ocrv3
 |-------------|-----------|----------|----------|-----------|--------------------|
 | OCR_DET     | 0.411      |0.411      | 0.415     | 500     |    3.2911ms        |
 | OCR_CLS     | 0.699      |  0.699      |0.699     | 30      |    2.3425ms        |
-| OCR_REC     | 0.655      | 0.655      | 0.651     | 2077    |    10.4567ms       |
+| OCR_REC     | 0.655      | 0.655      | 0.649     | 2077    |    10.4567ms       |
 
 ## 其他说明
 上文提到的所有官方模型均可在 [官方OCRv3模型](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/doc/doc_ch/models_list.md) 找到
