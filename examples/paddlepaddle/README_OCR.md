@@ -156,8 +156,8 @@ mkdir -p /my_project/quant/to_compiler/ocrv3_rec
 python run_quantization.py -f paddle -r quant -ch TX511 -if infer_ocr_rec_model -m example/models/en_PP-OCRv3_rec_infer_retrain_relu_4dims/ocrv3_rec.pdmodel -w example/models/en_PP-OCRv3_rec_infer_retrain_relu_4dims/ocrv3_rec.pdiparams -s /my_project/quant/ocrv3_rec/ -bs 1 -i 600 -b 16 -qm min_max -is 1 3 48 320
 
 # 执行推理命令,对转换模型和量化模型在整个测试集上进行推理（可并行执行）
-python run_quantization.py -r infer -ch TX511 -m /my_project/quant/ocrv3_det/ocrv3_rec.onnx -if infer_ocr_rec_model -bs 1 -i 2100
-python run_quantization.py -r infer -ch TX511 -m /my_project/quant/ocrv3_det/ocrv3_rec_quantize.onnx -if infer_ocr_rec_model -bs 1 -i 2100
+python run_quantization.py -r infer -ch TX511 -m /my_project/quant/ocrv3_rec/ocrv3_rec.onnx -if infer_ocr_rec_model -bs 1 -i 2100
+python run_quantization.py -r infer -ch TX511 -m /my_project/quant/ocrv3_rec/ocrv3_rec_quantize.onnx -if infer_ocr_rec_model -bs 1 -i 2100
 
 # 拷贝模型到指定目录
 cp /my_project/quant/ocrv3_rec/ocrv3_rec_quantize.onnx /my_project/quant/to_compiler/ocrv3_rec/
